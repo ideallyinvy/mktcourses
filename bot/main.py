@@ -73,7 +73,7 @@ async def cork(ctx):
                 await ctx.send(nextMessage.content)
 
 @client.command()
-async def mollo(ctx, *args)
+async def mollo(ctx, *args):
     if args == 'jab':
         await ctx.send(https://gfycat.com/embarrassedtenderfinch)
 
