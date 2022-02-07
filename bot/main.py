@@ -74,4 +74,4 @@ async def cork(ctx):
 
 # connecting the script to the bot
 if __name__ == "__main__":
-    bot.run(TOKEN)
+    client.run(TOKEN)
