@@ -16,6 +16,7 @@ TOKEN = os.getenv("DISCORD_TOKEN")
 async def on_ready():
     print('We have logged in as {0.user}'.format(wffle))
 
+# welcomes new users to its server
 @wffle.event
 async def on_member_join(member):
     channel = wffle.get_channel(835366700093407255)
@@ -61,34 +62,24 @@ async def on_message(message):
 # reposts a random message from the corkboard, ignoring plain text messages
 @wffle.command()
 async def cork(ctx):
-    print("Called!")
     channel = wffle.get_channel(836433543726628935)
-    print(channel)
     messages = await channel.history(limit=500).flatten()
     rand = randint(0, len(messages)-1)
     randMessage = messages[rand]
-    print(randMessage)
     
-    if randMessage.content.startswith('http'):
-        prev = messages[rand+1]
-        for e in prev.embeds:
-            await ctx.send(embed=e.copy())
-        await ctx.send(randMessage.content)
-    else:
-        while randMessage.embeds == None and rand !=0:
-            rand -= 1
-            randMessage = messages[rand]
-        for e in randMessage.embeds:
-            await ctx.send(embed=e.copy())
-        if '<#921529365827821608>' in randMessage.content:
-            nextMessage = messages[rand-1]
-            if nextMessage.content.startswith('http'):
-                await ctx.send(nextMessage.content)
+    while randMessage.embeds == None and rand !=0:
+        rand -= 1
+        randMessage = messages[rand]
+    for e in randMessage.embeds:
+        await ctx.send(embed=e.copy())
+
+# returns the current time in NST
 @wffle.command()
 async def invytime(ctx):
     invytime = datetime.now(pytz.timezone('America/St_Johns'))
-    await ctx.send(f'The correct time is: {invytime.strftime("%I:%M %p")}')
-                
+    await ctx.send(f'The correct time is: {invytime.strftime("%#I:%M %p")}')
+
+# calls up hitbox visuals for Rivals of Aether
 @wffle.command()
 async def mollo(ctx, arg):
     if arg == 'jab':
