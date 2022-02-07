@@ -74,7 +74,7 @@ async def cork(ctx):
 
 @client.command()
 async def mollo(ctx, arg):
-    if args == 'jab':
+    if arg == 'jab':
         await ctx.send('https://gfycat.com/embarrassedtenderfinch')
 
 # connecting the script to the bot
