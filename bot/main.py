@@ -6,7 +6,7 @@ from random import *
 intents = discord.Intents.default()
 intents.members = True
 
-client = commands.Bot(command_prefix = '!', intents = intents)
+wffle = commands.Bot(command_prefix = '!', intents = intents)
 TOKEN = os.getenv("DISCORD_TOKEN")
 
 # confirms the bot's online status
