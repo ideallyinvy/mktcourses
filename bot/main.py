@@ -10,19 +10,25 @@ client = commands.Bot(command_prefix = '!', intents = intents)
 TOKEN = os.getenv("DISCORD_TOKEN")
 
 # confirms the bot's online status
-@client.event
+@wffle.event
 async def on_ready():
-    print('We have logged in as {0.user}'.format(client))
+    print('We have logged in as {0.user}'.format(wffle))
+
+@wffle.event
+async def on_member_join(member):
+    channel = wffle.get_channel(835366700093407255)
+    await channel.send("Welcome to my server")
 
 # various events checked when a message is sent
-@client.event
+@wffle.event
 async def on_message(message):
     
     # ignores messages from the bot itself
-    if message.author == client.user:
+    if message.author == wffle.user:
         return
+
     # responds to being mentioned
-    if client.user.mentioned_in(message):
+    if wffle.user.mentioned_in(message):
         if 'LOL' in message.content:
             roleID = 921612594912059412
             role = message.guild.get_role(roleID)
@@ -33,7 +39,12 @@ async def on_message(message):
             randUser = toPing[rand]
             await message.channel.send('LOL <@'+ str(randUser.id) + '>')
         else:
-            await message.channel.send('<:Michael:835690736342007878>')       
+            roleID = 835575488147226674
+            role = message.guild.get_role(roleID)
+            if role in message.author.roles:
+                await message.channel.send(':michal')
+            else:
+                await message.channel.send('<:Michael:835690736342007878>')       
 
     # responds to certified funny keywords with LOL
     if 'POO' in message.content or 'PEE' in message.content:
@@ -43,15 +54,15 @@ async def on_message(message):
     if 'monday' in str.lower(message.content):
         await message.channel.send('<@240192847209299969>')
 
-    await client.process_commands(message)
+    await wffle.process_commands(message)
 
 # reposts a random message from the corkboard, ignoring plain text messages
-@client.command()
+@wffle.command()
 async def cork(ctx):
     print("Called!")
-    channel = client.get_channel(836433543726628935)
+    channel = wffle.get_channel(836433543726628935)
     print(channel)
-    messages = await channel.history(limit=300).flatten()
+    messages = await channel.history(limit=500).flatten()
     rand = randint(0, len(messages)-1)
     randMessage = messages[rand]
     print(randMessage)
@@ -72,11 +83,11 @@ async def cork(ctx):
             if nextMessage.content.startswith('http'):
                 await ctx.send(nextMessage.content)
 
-@client.command()
+@wffle.command()
 async def mollo(ctx, arg):
     if arg == 'jab':
         await ctx.send('https://gfycat.com/embarrassedtenderfinch')
 
 # connecting the script to the bot
 if __name__ == "__main__":
-    client.run(TOKEN)
+    wffle.run(TOKEN)
