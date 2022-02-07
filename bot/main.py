@@ -1,3 +1,4 @@
+import os
 import discord
 from discord.utils import get
 from discord.ext import commands
@@ -6,6 +7,7 @@ intents = discord.Intents.default()
 intents.members = True
 
 client = commands.Bot(command_prefix = '!', intents = intents)
+TOKEN = os.getenv("DISCORD_TOKEN")
 
 # confirms the bot's online status
 @client.event
