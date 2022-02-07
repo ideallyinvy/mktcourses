@@ -3,6 +3,8 @@ import discord
 from discord.utils import get
 from discord.ext import commands
 from random import *
+from datetime import datetime
+import pytz
 intents = discord.Intents.default()
 intents.members = True
 
@@ -82,7 +84,11 @@ async def cork(ctx):
             nextMessage = messages[rand-1]
             if nextMessage.content.startswith('http'):
                 await ctx.send(nextMessage.content)
-
+@wffle.command()
+async def invytime(ctx):
+    invytime = datetime.now(pytz.timezone('America/St_Johns'))
+    await ctx.send(f'The correct time is: {invytime.strftime("%I:%M %p")}')
+                
 @wffle.command()
 async def mollo(ctx, arg):
     if arg == 'jab':
