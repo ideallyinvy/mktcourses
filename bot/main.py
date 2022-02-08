@@ -5,6 +5,7 @@ from discord.ext import commands
 from random import *
 from datetime import datetime
 import pytz
+from wonderwords import RandomWord
 intents = discord.Intents.default()
 intents.members = True
 
