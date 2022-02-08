@@ -111,6 +111,36 @@ async def tierlist(ctx, *, arg = 'lol no'):
     tierList = tierList + '\nF: ' + ', '.join(f)
     await ctx.send(tierList)
 
+# returns a randomized Waffle House member tier list
+@wffle.command()
+async def whlist(ctx, *, arg = 'lol no'):
+    s = []
+    a = []
+    b = []
+    c = []
+    d = []
+    f = []
+    tiers = [s, a, b, c, d, f]
+    list = ['Ben', 'Reina', 'Tylor', 'Mia', 'Connor',
+    'Dinos', 'Noah', 'Pantch', 'Jordan', 'Aeir', 'Michael', 'MSB',
+    'DiChiDu', 'Akashi', 'Quentin', 'TG', 'Sushi', 'Toby', 'Waffle-bot',
+    'Acarcion', 'Danzello', 'Julian', 'Brad', 'Backpack', 'Ceroas',
+    'Rift', 'Violet']
+    shuffle(list)
+    for i in range(len(list)):
+        tiers[randint(0, 5)].append(list[i])
+    if arg != 'lol no':
+        tierList = '**__' + arg + ' Tier List__**'
+    else:
+        tierList = '**__My tier list__**'
+    tierList = tierList + '\nS: ' + ', '.join(s)
+    tierList = tierList + '\nA: ' + ', '.join(a)
+    tierList = tierList + '\nB: ' + ', '.join(b)
+    tierList = tierList + '\nC: ' + ', '.join(c)
+    tierList = tierList + '\nD: ' + ', '.join(d)
+    tierList = tierList + '\nF: ' + ', '.join(f)
+    await ctx.send(tierList)
+
 # calls up hitbox visuals for Rivals of Aether
 @wffle.command()
 async def mollo(ctx, arg):
