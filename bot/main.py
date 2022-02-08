@@ -59,7 +59,7 @@ async def on_message(message):
 
 # returns a list of commands the bot has
 @wffle.command()
-async def help(ctx):
+async def sauce(ctx):
     help = 'My commands are:\n!cork\n!invytime\n!mollo jab\n!tierlist'
     await ctx.send(help)
 
