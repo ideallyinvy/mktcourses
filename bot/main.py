@@ -35,9 +35,7 @@ async def on_message(message):
         if 'LOL' in message.content:
             roleID = 921612594912059412
             role = message.guild.get_role(roleID)
-            print(role)
             toPing = role.members
-            print(toPing)
             rand = randint(0, len(toPing)-1)
             randUser = toPing[rand]
             await message.channel.send('LOL <@'+ str(randUser.id) + '>')
@@ -78,6 +76,34 @@ async def cork(ctx):
 async def invytime(ctx):
     invytime = datetime.now(pytz.timezone('America/St_Johns'))
     await ctx.send(f'The correct time is: {invytime.strftime("%#I:%M %p")}')
+
+# returns a randomized Rivals of Aether tier list
+@wffle.command()
+async def tierlist(ctx, arg = 'lol no'):
+    s = []
+    a = []
+    b = []
+    c = []
+    d = []
+    f = []
+    tiers = [s, a, b, c, d, f]
+    list = ['Mollo', 'Clairen', 'Forsburn', 'Zetterburn', 'Wrastor',
+    'Absa', 'Elliana', 'Pomme', 'Olympia', 'Sylvanos', 'Maypul', 'Kragg',
+    'Ori', 'Shovel Knight', 'Orcane', 'Etalus', 'Ranno', 'Hodan']
+    shuffle(list)
+    for i in range(len(list)):
+        tiers[randint(0, 5)].append(list[i])
+    if arg != 'lol no':
+        tierList = '**__' + arg + ' Tier List__**'
+    else:
+        tierList = '**__My tier list__**'
+    tierList = tierList + '\nS: ' + ', '.join(s)
+    tierList = tierList + '\nA: ' + ', '.join(a)
+    tierList = tierList + '\nB: ' + ', '.join(b)
+    tierList = tierList + '\nC: ' + ', '.join(c)
+    tierList = tierList + '\nD: ' + ', '.join(d)
+    tierList = tierList + '\nF: ' + ', '.join(f)
+    await ctx.send(tierList)
 
 # calls up hitbox visuals for Rivals of Aether
 @wffle.command()
