@@ -85,7 +85,7 @@ async def invytime(ctx):
 
 # returns a randomized Rivals of Aether tier list
 @wffle.command()
-async def tierlist(ctx, arg = 'lol no'):
+async def tierlist(ctx, *, arg = 'lol no'):
     s = []
     a = []
     b = []
