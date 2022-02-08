@@ -57,6 +57,12 @@ async def on_message(message):
 
     await wffle.process_commands(message)
 
+# returns a list of commands the bot has
+@wffle.command()
+async def help(ctx):
+    help = 'My commands are:\n!cork\n!invytime\n!mollo jab\n!tierlist'
+    await ctx.send(help)
+
 # reposts a random message from the corkboard, ignoring plain text messages
 @wffle.command()
 async def cork(ctx):
