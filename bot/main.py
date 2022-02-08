@@ -141,6 +141,11 @@ async def whlist(ctx, *, arg = 'lol no'):
     tierList = tierList + '\nF: ' + ', '.join(f)
     await ctx.send(tierList)
 
+# ruins lives
+@wffle.command()
+async def whilst(ctx):
+    await ctx.send('BRITISH.')
+
 # calls up hitbox visuals for Rivals of Aether
 @wffle.command()
 async def mollo(ctx, arg):
