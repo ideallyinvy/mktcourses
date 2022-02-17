@@ -110,6 +110,7 @@ async def tierlist(ctx, *, arg = 'lol no'):
     tierList = tierList + '\nC: ' + ', '.join(c)
     tierList = tierList + '\nD: ' + ', '.join(d)
     tierList = tierList + '\nF: ' + ', '.join(f)
+    
     await ctx.send(tierList)
 
 # returns a randomized Waffle House member tier list
