@@ -183,12 +183,6 @@ async def randlist(ctx=None):
         await channel.send(tierList)
     else:
         await ctx.send(tierList)
-        
-# calls up hitbox visuals for Rivals of Aether
-@wffle.command()
-async def mollo(ctx, arg):
-    if arg == 'jab':
-        await ctx.send('https://gfycat.com/embarrassedtenderfinch')
 
 # connecting the script to the bot
 if __name__ == "__main__":
