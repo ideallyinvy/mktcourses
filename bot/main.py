@@ -124,10 +124,10 @@ async def whlist(ctx, *, arg = 'lol no'):
     f = []
     tiers = [s, a, b, c, d, f]
     list = ['Ben', 'Reina', 'Tylor', 'Mia', 'Connor',
-    'Dinos', 'Noah', 'Pantch', 'Jordan', 'Aeir', 'Michael', 'MSB',
-    'DiChiDu', 'Akashi', 'Quentin', 'TG', 'Sushi', 'Toby', 'Waffle-bot',
+    'Dinos', 'NBad', 'Pantch', 'Jordan', 'Aeir', 'Michael', 'MSB',
+    'Soren', 'Akashi', 'Quentin', 'TG', 'Stevie', 'Toby', 'Waffle-bot',
     'Acarcion', 'Danzello', 'Julian', 'Brad', 'Backpack', 'Ceroas',
-    'Rift', 'Violet']
+    'Rift', 'Violet', 'Terra']
     shuffle(list)
     for i in range(len(list)):
         tiers[randint(0, 5)].append(list[i])
