@@ -128,7 +128,7 @@ async def whlist(ctx, *, arg = 'lol no'):
     'Soren', 'Akashi', 'Quentin', 'TG', 'Stevie', 'Toby',
     'Waffle-bot', 'Acarcion', 'Danzello', 'Brad',
     'Backpack', 'Ceroas', 'Rift', 'Violet', 'Terra',
-    'Sawtooth']
+    'Sawtooth', 'Connor']
     shuffle(list)
     for i in range(len(list)):
         tiers[randint(0, 5)].append(list[i])
@@ -165,7 +165,7 @@ async def randlist(ctx=None):
     'Soren', 'Akashi', 'Quentin', 'TG', 'Stevie', 'Toby',
     'Waffle-bot', 'Acarcion', 'Danzello', 'Brad',
     'Backpack', 'Ceroas', 'Rift', 'Violet', 'Terra',
-    'Sawtooth']
+    'Sawtooth', 'Connor']
     shuffle(list)
     for i in range(len(list)):
         tiers[randint(0, 5)].append(list[i])
