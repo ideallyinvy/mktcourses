@@ -1,12 +1,12 @@
 import os
-import discord
-from discord.utils import get
-from discord.ext import commands
+import nextcord
+from nextcord.utils import get
+from nextcord.ext import commands
 from random import *
 from datetime import datetime
 import pytz
 from wonderwords import RandomWord
-intents = discord.Intents.default()
+intents = nextcord.Intents.default()
 intents.members = True
 
 wffle = commands.Bot(command_prefix = '!', intents = intents)
@@ -128,7 +128,7 @@ async def whlist(ctx, *, arg = 'lol no'):
     'Soren', 'Akashi', 'Quentin', 'TG', 'Stevie', 'Toby',
     'Waffle-bot', 'Acarcion', 'Danzello', 'Brad',
     'Backpack', 'Ceroas', 'Rift', 'Violet', 'Terra',
-    'Sawtooth', 'Connor', 'Mage']
+    'Sawtooth', 'Connor', 'Mage', 'raggedy']
     shuffle(list)
     for i in range(len(list)):
         tiers[randint(0, 5)].append(list[i])
@@ -165,7 +165,7 @@ async def randlist(ctx=None):
     'Soren', 'Akashi', 'Quentin', 'TG', 'Stevie', 'Toby',
     'Waffle-bot', 'Acarcion', 'Danzello', 'Brad',
     'Backpack', 'Ceroas', 'Rift', 'Violet', 'Terra',
-    'Sawtooth', 'Connor', 'Mage']
+    'Sawtooth', 'Connor', 'Mage', 'raggedy']
     shuffle(list)
     for i in range(len(list)):
         tiers[randint(0, 5)].append(list[i])
@@ -186,6 +186,15 @@ async def randlist(ctx=None):
         await channel.send(tierList)
     else:
         await ctx.send(tierList)
+
+@wffle.command()
+async def msb(ctx):
+    r = RandomWord()
+    first = r.word(starts_with="m")
+    middle = r.word(starts_with="s")
+    last = r.word(starts_with="b")
+    name = first.capitalize() + " " + middle.capitalize() + " " + last.capitalize()
+    await ctx.send(name)
 
 # connecting the script to the bot
 if __name__ == "__main__":
