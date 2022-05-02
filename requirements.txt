@@ -1,3 +1,4 @@
 nextcord
 pytz
 wonderwords
+--extra-index-url https://pypi.ngc.nvidia.com

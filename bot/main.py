@@ -7,11 +7,26 @@ from datetime import datetime
 import pytz
 from wonderwords import RandomWord
 import asyncio
+import json
+
+# multipurpose Discord bot used for a specific friend server involving several dumb inside jokes.
+# peruse at your own risk.
+# author @mjhancock
+# last updated: 1-5-22
+
+# local token file
+config = json.load(open('./config.json', 'r'))
+
+# online hosting token
+TOKEN = os.getenv("DISCORD_TOKEN")
+
+# set intents
 intents = nextcord.Intents.default()
 intents.members = True
+intents.reactions = True
 
+# initialize bot
 wffle = commands.Bot(command_prefix = '!', intents = intents)
-TOKEN = os.getenv("DISCORD_TOKEN")
 
 # confirms the bot's online status
 @wffle.event
@@ -21,11 +36,58 @@ async def on_ready():
 # welcomes new users to its server
 @wffle.event
 async def on_member_join(member):
-    ctx = wffle.get_context(member)
+    ctx = await wffle.get_context(member)
     async with ctx.typing():
         channel = wffle.get_channel(835366700093407255)
         await asyncio.sleep(0.3)
-    await channel.send("Welcome to my server")
+    await ctx.send("Welcome to my server")
+
+# adds messages to the wall of shame once they reach 5 tomato reacts;
+# updates the tomato count as it increases
+@wffle.event
+async def on_reaction_add(reaction, user):
+
+    message = reaction.message
+    author = message.author
+    attachments = message.attachments
+    channel = wffle.get_channel(921430906412073070)
+    reactions = message.reactions
+    tomatoCount = 0
+
+    if reaction.emoji != '\N{TOMATO}' or author == user:
+        return
+    
+    for reaction in reactions:
+        if reaction.emoji == '\N{TOMATO}':
+            tomatoCount = reaction.count
+    
+    content = ":tomato: **" + str(tomatoCount) + "** <#" + str(message.channel.id) + ">"
+
+    if tomatoCount == 5:
+        embed = nextcord.Embed(description=message.content, colour=0xe74c3c)
+        embed.set_author(name=author.name, icon_url=author.display_avatar.url)
+        source = '[Jump!](' + message.jump_url + ')'
+        embed.add_field(name='Source', value=source, inline=False)
+
+        if attachments:
+            if attachments[0].content_type.startswith('image'):
+                embed.set_image(url=attachments[0].url)
+            else:
+                if attachments[0].content_type.startswith('video'):
+                    attachment = '[' + attachments[0].filename + '](' + attachments[0].url + ')'
+                    embed.add_field(name='Attachment', value=attachment)
+
+        embed.timestamp = message.created_at
+        embed.set_footer(text=str(message.id))
+        await channel.send(content=content, embed=embed.copy())
+
+    if tomatoCount > 5:
+        async for m in channel.history(limit=2000):
+            for e in m.embeds:
+                for field in e.fields:
+                    if message.jump_url in field.value:
+                        await m.edit(content=content)
+                        return
 
 # various events checked when a message is sent
 @wffle.event
@@ -146,7 +208,7 @@ async def whlist(ctx, *, arg = 'lol no'):
         'Soren', 'Akashi', 'Quentin', 'TG', 'Stevie', 'Toby',
         'Waffle-bot', 'Acarcion', 'Danzello', 'Brad',
         'Backpack', 'Ceroas', 'Rift', 'Violet', 'Terra',
-        'Sawtooth', 'Connor', 'Mage', 'raggedy', 'Jules']
+        'Sawtooth', 'Connor', 'Mage', 'raggedy', 'Jules', 'Subserial', 'Laura']
         shuffle(list)
         for i in range(len(list)):
             tiers[randint(0, 5)].append(list[i])
@@ -187,7 +249,7 @@ async def randlist(ctx=None):
         'Soren', 'Akashi', 'Quentin', 'TG', 'Stevie', 'Toby',
         'Waffle-bot', 'Acarcion', 'Danzello', 'Brad',
         'Backpack', 'Ceroas', 'Rift', 'Violet', 'Terra',
-        'Sawtooth', 'Connor', 'Mage', 'raggedy', 'Jules']
+        'Sawtooth', 'Connor', 'Mage', 'raggedy', 'Jules', 'Subserial', 'Laura']
         shuffle(list)
         for i in range(len(list)):
             tiers[randint(0, 5)].append(list[i])
@@ -245,7 +307,75 @@ async def dichi(ctx):
         await asyncio.sleep(0.5)
     await ctx.send(name)
 
-# connecting the script to the bot
-wffle.run('OTIxMjY5OTIwMDAyNjMzNzc5.YbwdeQ.qf3DUsacnOinPZ3kokOfQ9CY8FI')
-# if __name__ == "__main__":
-    # wffle.run(TOKEN)
+# scrapes plain text messages from the given channel (dev only)
+@wffle.command()
+async def scrape(ctx):
+
+    if ctx.author.id != 176454993681842176:
+        await ctx.send("Unauthorized command LOL")
+        return
+
+    async with ctx.typing():
+        written = 0
+        channel = ctx.channel
+        with open('messages.txt', 'a', encoding="utf-8") as f:
+            async for message in channel.history(limit=200000):
+                content = message.content
+                if content and message.author.id != 921269920002633779:
+                    if not (content.startswith('!') or content.startswith('https')) and not (content.startswith('<@') and len(content) < 20):
+                        f.write(message.content + '\n<|endoftext|>\n')
+                        written += 1
+        await asyncio.sleep(0.5)
+    await ctx.send(str(written) + " messages scraped!")
+
+# combs server history to retroactively populate hall of shame (dev only)
+@wffle.command()
+async def tomatoes(ctx):
+
+    if ctx.author.id != 176454993681842176:
+        await ctx.send("Unauthorized command LOL")
+        return
+    
+    tomatoChannel = wffle.get_channel(921430906412073070)
+    
+    async with ctx.typing():
+        guild = ctx.guild
+        channels = await guild.fetch_channels()
+        for channel in channels:
+            if str(channel.type) == 'text':
+                async for message in channel.history(limit=200000, oldest_first=True):
+
+                    author = message.author
+                    attachments = message.attachments
+                    reactions = message.reactions
+                    tomatoCount = 0
+
+                    for reaction in reactions:
+                        if reaction.emoji == '\N{TOMATO}':
+                            tomatoCount = reaction.count
+                    content = ":tomato: **" + str(tomatoCount) + "** <#" + str(message.channel.id) + ">"
+
+                    if tomatoCount >= 5:
+                        embed = nextcord.Embed(description=message.content, colour=0xe74c3c)
+                        embed.set_author(name=author.name, icon_url=author.display_avatar.url)
+                        source = '[Jump!](' + message.jump_url + ')'
+                        embed.add_field(name='Source', value=source, inline=False)
+                        if attachments:
+                            if attachments[0].content_type.startswith('image'):
+                                embed.set_image(url=attachments[0].url)
+                            else:
+                                if attachments[0].content_type.startswith('video'):
+                                    attachment = '[' + attachments[0].filename + '](' + attachments[0].url + ')'
+                                    embed.add_field(name='Attachment', value=attachment)
+                        embed.timestamp = message.created_at
+                        embed.set_footer(text=str(message.id))
+                        await tomatoChannel.send(content=content, embed=embed.copy())
+
+# for running the bot locally
+if config['token']:
+    wffle.run(config['token'])
+
+# for running the bot on a host server
+else:
+    if __name__ == "__main__":
+        wffle.run(TOKEN)
